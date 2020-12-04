@@ -21,8 +21,8 @@ category_detail = CategoryViewSet.as_view({
 })
 
 router = DefaultRouter(trailing_slash=False)
-# router.register('categories', CategoryViewSet)
-# router.register('sellers', SellerViewSet)
+router.register('categories', CategoryViewSet)
+router.register('sellers', SellerViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

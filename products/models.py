@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import AbstractUser
+from azon import settings
 
 class Category(models.Model):
     name = models.CharField(max_length=250)
@@ -25,12 +26,13 @@ class Product(models.Model):
     title = models.CharField(max_length=250)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     updated = models.DateTimeField(auto_now_add=True)
-    available_inventory = models.PositiveIntegerField(default=0)
-#
+    # available_inventory = models.PositiveIntegerField(default=0)
+
 # class Cart(models.Model):
 #     """A model that contains data for a shopping cart."""
 #     customer = models.OneToOneField(
-#         # settings.AUTH_USER_MODEL,
+#         settings.AUTH_USER_MODEL,
+#         on_delete=models.DO_NOTHING,
 #         related_name='cart'
 #     )
 #     created_at = models.DateTimeField(auto_now_add=True)
@@ -62,7 +64,7 @@ class Product(models.Model):
 #     an order is a customer purchase.
 #     """
 #     customer = models.ForeignKey(
-#         # settings.AUTH_USER_MODEL,
+#         settings.AUTH_USER_MODEL,
 #         related_name='orders',
 #         on_delete=models.CASCADE,
 #         null=True,
