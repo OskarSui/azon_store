@@ -3,10 +3,15 @@ from rest_framework import status, exceptions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .models import Product, Seller, Category
-from .serializers import ProductSerializer, ProductsAllInfoSerializer, CategorySerializer, SellerSerializer
+from .models import Product, Seller, Category, Review
+from .serializers import (ProductSerializer,
+                          ProductsAllInfoSerializer,
+                          CategorySerializer,
+                          SellerSerializer,
+                          ReviewCreateSerializer
+                          )
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import permissions
+from rest_framework import permissions, generics
 from .permissions import IsOwner
 from datetime import datetime
 import pytz
@@ -34,7 +39,7 @@ class ProductList(APIView):
 class ProductList(ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -66,7 +71,20 @@ class ProductListAPIVIew(ListAPIView):
     search_fields = (
         'title',
     )
-#
+
+class ReviewListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewCreateSerializer
+    permission_classes = (permissions.AllowAny,)
+
+
+
+class ReviewRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewCreateSerializer
+    permission_classes = (permissions.AllowAny,)
+
+
 # class ReportView(APIView):
 #     """
 #     POST method only

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics,status, views
-from .serializers import RegisterSerialiazer, EmailVerificationSerializer, LoginSerializer, SetNewPasswordSerializer, ResetPasswordEmailRequestSerializer
+from authentication.serializers import RegisterSerialiazer, EmailVerificationSerializer, LoginSerializer, SetNewPasswordSerializer, ResetPasswordEmailRequestSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User

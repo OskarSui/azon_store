@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'authentication',
-    'products',
+    'products.apps.ProductsConfig',
     # 'cart',
 ]
 
@@ -140,19 +140,20 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.SearchFilter",
-        "rest_framework.filters.OrderingFilter",
+        # "rest_framework.filters.OrderingFilter",
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 2,
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     # 'rest_framework.permissions.IsAdminUser',
     )
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=10),
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
 }
 

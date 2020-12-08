@@ -1,7 +1,20 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
-from .models import Category, Product, Seller
+from .models import Category, Product, Seller, Review
 from django.contrib.auth.models import User
+
+class FilterReviewListSerializer(serializers.Serializer):
+    """Вывод рекурсивно children"""
+    def to_representation(self, data):
+        data = data.filter(parent=None)
+        return super().to_representation(data)
+
+
+class RecursiveSerializer(serializers.Serializer):
+    """Вывод рекурсивно children"""
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
 
 class CategorySerializer(ModelSerializer):
     random_photo = SerializerMethodField()
@@ -59,6 +72,24 @@ class ProductsAllInfoSerializer(ModelSerializer):
             'seller',
             'photo',
         )
+
+class ReviewCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Review
+        # fields = '__all__'
+        exclude = ['email']
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    children = RecursiveSerializer(many=True)
+
+    class Meta:
+        list_serializers_class = FilterReviewListSerializer
+        model = Review
+        fields = ('name', 'title', 'text', 'children')
+
+
 
 # class UserSerializer(serializers.ModelSerializer):
 #     class Meta:
